@@ -8,6 +8,12 @@
 
 #if os(iOS) || os(tvOS)
 
+#if swift(>=4.2)
+public typealias AttributedStringKey = NSAttributedString.Key
+#else
+public typealias AttributedStringKey = NSAttributedStringKey
+#endif
+
 extension NSAttributedString {
     /// EZSE: Adds bold attribute to NSAttributedString and returns it
 
@@ -17,7 +23,7 @@ extension NSAttributedString {
         guard let copy = self.mutableCopy() as? NSMutableAttributedString else { return self }
 
         let range = (self.string as NSString).range(of: self.string)
-        copy.addAttributes([NSAttributedStringKey.font: UIFont.boldSystemFont(ofSize: UIFont.systemFontSize)], range: range)
+        copy.addAttributes([AttributedStringKey.font: UIFont.boldSystemFont(ofSize: UIFont.systemFontSize)], range: range)
         return copy
     }
 
@@ -28,7 +34,14 @@ extension NSAttributedString {
         guard let copy = self.mutableCopy() as? NSMutableAttributedString else { return self }
 
         let range = (self.string as NSString).range(of: self.string)
-        copy.addAttributes([NSAttributedStringKey.underlineStyle: NSUnderlineStyle.styleSingle.rawValue], range: range)
+
+        #if swift(>=4.2)
+          let styleSingle = NSUnderlineStyle.single
+        #else
+          let styleSingle = NSUnderlineStyle.styleSingle
+        #endif
+      
+        copy.addAttributes([AttributedStringKey.underlineStyle: styleSingle.rawValue], range: range)
         return copy
     }
 
@@ -39,7 +52,7 @@ extension NSAttributedString {
         guard let copy = self.mutableCopy() as? NSMutableAttributedString else { return self }
 
         let range = (self.string as NSString).range(of: self.string)
-        copy.addAttributes([NSAttributedStringKey.font: UIFont.italicSystemFont(ofSize: UIFont.systemFontSize)], range: range)
+        copy.addAttributes([AttributedStringKey.font: UIFont.italicSystemFont(ofSize: UIFont.systemFontSize)], range: range)
         return copy
     }
 
@@ -47,9 +60,15 @@ extension NSAttributedString {
     public func strikethrough() -> NSAttributedString {
         guard let copy = self.mutableCopy() as? NSMutableAttributedString else { return self }
 
+        #if swift(>=4.2)
+          let styleSingle = NSUnderlineStyle.single
+        #else
+          let styleSingle = NSUnderlineStyle.styleSingle
+        #endif
+
         let range = (self.string as NSString).range(of: self.string)
         let attributes = [
-            NSAttributedStringKey.strikethroughStyle: NSNumber(value: NSUnderlineStyle.styleSingle.rawValue as Int)]
+            AttributedStringKey.strikethroughStyle: NSNumber(value: styleSingle.rawValue as Int)]
         copy.addAttributes(attributes, range: range)
 
         return copy
@@ -62,7 +81,7 @@ extension NSAttributedString {
         guard let copy = self.mutableCopy() as? NSMutableAttributedString else { return self }
 
         let range = (self.string as NSString).range(of: self.string)
-        copy.addAttributes([NSAttributedStringKey.foregroundColor: color], range: range)
+        copy.addAttributes([AttributedStringKey.foregroundColor: color], range: range)
         return copy
     }
 }

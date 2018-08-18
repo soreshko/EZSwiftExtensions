@@ -10,6 +10,12 @@
 
 import UIKit
 
+#if swift(>=4.2)
+public typealias SwipeGestureRecognizerDirection = UISwipeGestureRecognizer.Direction
+#else
+public typealias SwipeGestureRecognizerDirection = UISwipeGestureRecognizerDirection
+#endif
+
 ///Make sure you use  "[weak self] (gesture) in" if you are using the keyword self inside the closure or there might be a memory leak
 open class BlockSwipe: UISwipeGestureRecognizer {
     private var swipeAction: ((UISwipeGestureRecognizer) -> Void)?
@@ -19,7 +25,7 @@ open class BlockSwipe: UISwipeGestureRecognizer {
     }
 
     public convenience init (
-        direction: UISwipeGestureRecognizerDirection,
+        direction: SwipeGestureRecognizerDirection,
         fingerCount: Int = 1,
         action: ((UISwipeGestureRecognizer) -> Void)?) {
             self.init()

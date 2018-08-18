@@ -14,6 +14,16 @@ import UIKit
 @available(iOS 9.0, *)
 extension UIStackView {
 
+  #if swift(>=4.2)
+  public typealias StackViewDistribution =  UIStackView.Distribution
+  public typealias StackViewAlignment =  UIStackView.Alignment
+  public typealias LayoutConstraintAxis =  NSLayoutConstraint.Axis
+  #else
+  public typealias StackViewDistribution = UIStackViewDistribution
+  public typealias StackViewAlignment = UIStackViewAlignment
+  public typealias LayoutConstraintAxis = UILayoutConstraintAxis
+  #endif
+
 	/// EZSwiftExtensions: Convenience initializer in order to directly pass the distribution, alignment, axis and spacing of the stack view.
 	///
 	/// - Parameters:
@@ -21,9 +31,9 @@ extension UIStackView {
 	///   - alignment: the alignment of the stack view
 	///   - axis: the axis (e.g. horizontal or vertical)
 	///   - spacing: spacing between subviews, default is 0
-	public convenience init(distribution: UIStackViewDistribution,
-	                        alignment: UIStackViewAlignment,
-	                        axis: UILayoutConstraintAxis,
+	public convenience init(distribution: StackViewDistribution,
+	                        alignment: StackViewAlignment,
+	                        axis: LayoutConstraintAxis,
 	                        spacing: CGFloat = 0) {
 		self.init()
 		self.distribution = distribution

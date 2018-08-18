@@ -10,6 +10,12 @@
 
 import UIKit
 
+#if swift(>=4.2)
+public typealias ViewAnimationOptions = UIView.AnimationOptions
+#else
+public typealias ViewAnimationOptions = UIViewAnimationOptions
+#endif
+
 // MARK: Custom UIView Initilizers
 extension UIView {
     /// EZSE: convenience contructor to define a view based on width, height and base coordinates.
@@ -412,7 +418,7 @@ extension UIView {
             delay: 0,
             usingSpringWithDamping: UIViewAnimationSpringDamping,
             initialSpringVelocity: UIViewAnimationSpringVelocity,
-            options: UIViewAnimationOptions.allowAnimatedContent,
+            options: ViewAnimationOptions.allowAnimatedContent,
             animations: animations,
             completion: completion
         )
@@ -485,7 +491,7 @@ extension UIView {
     }
 
     /// EZSwiftExtensions
-    public func addSwipeGesture(direction: UISwipeGestureRecognizerDirection, numberOfTouches: Int = 1, target: AnyObject, action: Selector) {
+    public func addSwipeGesture(direction: SwipeGestureRecognizerDirection, numberOfTouches: Int = 1, target: AnyObject, action: Selector) {
         let swipe = UISwipeGestureRecognizer(target: target, action: action)
         swipe.direction = direction
 
@@ -500,7 +506,7 @@ extension UIView {
     }
 
     /// EZSwiftExtensions - Make sure you use  "[weak self] (gesture) in" if you are using the keyword self inside the closure or there might be a memory leak
-    public func addSwipeGesture(direction: UISwipeGestureRecognizerDirection, numberOfTouches: Int = 1, action: ((UISwipeGestureRecognizer) -> Void)?) {
+    public func addSwipeGesture(direction: SwipeGestureRecognizerDirection, numberOfTouches: Int = 1, action: ((UISwipeGestureRecognizer) -> Void)?) {
         let swipe = BlockSwipe(direction: direction, fingerCount: numberOfTouches, action: action)
         addGestureRecognizer(swipe)
         isUserInteractionEnabled = true

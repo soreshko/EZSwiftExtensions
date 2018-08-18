@@ -10,21 +10,39 @@
 
 import UIKit
 
+#if swift(>=4.2)
+public typealias ImageOrientation = UIImage.Orientation
+#else
+public typealias ImageOrientation = UIImageOrientation
+#endif
+
 extension UIImage {
     
     /// EZSE: Returns base64 string
     public var base64: String {
-        return UIImageJPEGRepresentation(self, 1.0)!.base64EncodedString()
+      #if swift(>=4.2)
+      return jpegData(compressionQuality: 1.0)!.base64EncodedString()
+      #else
+      return UIImageJPEGRepresentation(self, 1.0)!.base64EncodedString()
+      #endif
     }
     
     /// EZSE: Returns compressed image to rate from 0 to 1
     public func compressImage(rate: CGFloat) -> Data? {
-        return UIImageJPEGRepresentation(self, rate)
+      #if swift(>=4.2)
+      return jpegData(compressionQuality: rate)
+      #else
+      return UIImageJPEGRepresentation(self, rate)
+      #endif
     }
 
     /// EZSE: Returns Image size in Bytes
     public func getSizeAsBytes() -> Int {
-        return UIImageJPEGRepresentation(self, 1)?.count ?? 0
+      #if swift(>=4.2)
+      return jpegData(compressionQuality: 1)?.count ?? 0
+      #else
+      return UIImageJPEGRepresentation(self, 1)?.count ?? 0
+      #endif
     }
 
     /// EZSE: Returns Image size in Kylobites
@@ -89,7 +107,7 @@ extension UIImage {
         }
         let scaledBounds: CGRect = CGRect(x: bound.x * self.scale, y: bound.y * self.scale, width: bound.w * self.scale, height: bound.h * self.scale)
         let imageRef = self.cgImage?.cropping(to: scaledBounds)
-        let croppedImage: UIImage = UIImage(cgImage: imageRef!, scale: self.scale, orientation: UIImageOrientation.up)
+        let croppedImage: UIImage = UIImage(cgImage: imageRef!, scale: self.scale, orientation: ImageOrientation.up)
         return croppedImage
     }
 

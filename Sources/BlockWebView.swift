@@ -10,6 +10,13 @@
 
 import UIKit
 
+#if swift(>=4.2)
+public typealias WebViewNavigationType =  UIWebView.NavigationType
+#else
+public typealias WebViewNavigationType = UIWebViewNavigationType
+#endif
+
+
 ///Make sure you use  `[weak self] (NSURLRequest) in` if you are using the keyword `self` inside the closure or there might be a memory leak
 open class BlockWebView: UIWebView, UIWebViewDelegate {
     open var didStartLoad: ((URLRequest) -> Void)?
@@ -39,7 +46,7 @@ open class BlockWebView: UIWebView, UIWebViewDelegate {
         didFailLoad? (webView.request!, error)
     }
 
-    open func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+  open func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: WebViewNavigationType) -> Bool {
         if let should = shouldStartLoadingRequest {
             return should (request)
         } else {

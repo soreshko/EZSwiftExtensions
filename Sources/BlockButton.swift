@@ -10,6 +10,14 @@
 
 import UIKit
 
+#if swift(>=4.2)
+public typealias ControlEvents = UIControl.Event
+public typealias ControlState = UIControl.State
+#else
+public typealias ControlEvents = UIControlEvents
+public typealias ControlState = UIControlState
+#endif
+
 public typealias BlockButtonAction = (_ sender: BlockButton) -> Void
 
 ///Make sure you use  "[weak self] (sender) in" if you are using the keyword self inside the closure or there might be a memory leak
@@ -60,16 +68,16 @@ open class BlockButton: UIButton {
     }
 
     private func defaultInit() {
-        addTarget(self, action: #selector(BlockButton.didPressed(_:)), for: UIControlEvents.touchUpInside)
-        addTarget(self, action: #selector(BlockButton.highlight), for: [UIControlEvents.touchDown, UIControlEvents.touchDragEnter])
+        addTarget(self, action: #selector(BlockButton.didPressed(_:)), for: ControlEvents.touchUpInside)
+        addTarget(self, action: #selector(BlockButton.highlight), for: [ControlEvents.touchDown, ControlEvents.touchDragEnter])
         addTarget(self, action: #selector(BlockButton.unhighlight), for: [
-            UIControlEvents.touchUpInside,
-            UIControlEvents.touchUpOutside,
-            UIControlEvents.touchCancel,
-            UIControlEvents.touchDragExit
+            ControlEvents.touchUpInside,
+            ControlEvents.touchUpOutside,
+            ControlEvents.touchCancel,
+            ControlEvents.touchDragExit
         ])
-        setTitleColor(UIColor.black, for: UIControlState.normal)
-        setTitleColor(UIColor.blue, for: UIControlState.selected)
+        setTitleColor(UIColor.black, for: ControlState.normal)
+        setTitleColor(UIColor.blue, for: ControlState.selected)
     }
 
     open func addAction(_ action: @escaping BlockButtonAction) {

@@ -10,6 +10,12 @@
 
 import UIKit
 
+#if swift(>=4.2)
+public typealias GestureRecognizerState = UIGestureRecognizer.State
+#else
+public typealias GestureRecognizerState = UIGestureRecognizerState
+#endif
+
 ///Make sure you use  "[weak self] (gesture) in" if you are using the keyword self inside the closure or there might be a memory leak
 open class BlockLongPress: UILongPressGestureRecognizer {
     private var longPressAction: ((UILongPressGestureRecognizer) -> Void)?
@@ -25,7 +31,7 @@ open class BlockLongPress: UILongPressGestureRecognizer {
     }
 
     @objc open func didLongPressed(_ longPress: UILongPressGestureRecognizer) {
-        if longPress.state == UIGestureRecognizerState.began {
+        if longPress.state == GestureRecognizerState.began {
             longPressAction?(longPress)
         }
     }

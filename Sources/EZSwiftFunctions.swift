@@ -141,11 +141,19 @@ public struct ez {
 
         #if os(iOS)
 
+        #if swift(>=4.2)
+        if screenOrientation.isPortrait {
+          return UIScreen.main.bounds.size.width
+        } else {
+          return UIScreen.main.bounds.size.height
+        }
+        #else
         if UIInterfaceOrientationIsPortrait(screenOrientation) {
             return UIScreen.main.bounds.size.width
         } else {
             return UIScreen.main.bounds.size.height
         }
+        #endif
 
         #elseif os(tvOS)
 
@@ -159,11 +167,19 @@ public struct ez {
 
         #if os(iOS)
 
+      #if swift(>=4.2)
+        if screenOrientation.isPortrait {
+            return UIScreen.main.bounds.size.height
+        } else {
+            return UIScreen.main.bounds.size.width
+        }
+        #else
         if UIInterfaceOrientationIsPortrait(screenOrientation) {
             return UIScreen.main.bounds.size.height
         } else {
             return UIScreen.main.bounds.size.width
         }
+        #endif
 
         #elseif os(tvOS)
 
@@ -183,11 +199,19 @@ public struct ez {
 
     /// EZSE: Return screen's height without StatusBar
     public static var screenHeightWithoutStatusBar: CGFloat {
+      #if swift(>=4.2)
+      if screenOrientation.isPortrait {
+        return UIScreen.main.bounds.size.height - screenStatusBarHeight
+      } else {
+        return UIScreen.main.bounds.size.width - screenStatusBarHeight
+      }
+      #else
         if UIInterfaceOrientationIsPortrait(screenOrientation) {
             return UIScreen.main.bounds.size.height - screenStatusBarHeight
         } else {
             return UIScreen.main.bounds.size.width - screenStatusBarHeight
         }
+      #endif
     }
 
     #endif
@@ -202,7 +226,14 @@ public struct ez {
     /// EZSE: Calls action when a screen shot is taken
     public static func detectScreenShot(_ action: @escaping () -> Void) {
         let mainQueue = OperationQueue.main
-        _ = NotificationCenter.default.addObserver(forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot, object: nil, queue: mainQueue) { _ in
+      
+        #if swift(>=4.2)
+          let notificationName = UIApplication.userDidTakeScreenshotNotification
+        #else
+          let notificationName = NSNotification.Name.UIApplicationUserDidTakeScreenshot
+        #endif
+  
+        _ = NotificationCenter.default.addObserver(forName: notificationName, object: nil, queue: mainQueue) { _ in
             // executes after screenshot
             action()
         }
